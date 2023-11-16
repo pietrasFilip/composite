@@ -2,8 +2,8 @@ package com.app.structure.wall;
 
 import com.app.block.Block;
 import com.app.block.composite_block.CompositeBlock;
+import com.app.repository.provider.CompositeProvider;
 import com.app.structure.Structure;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import java.util.ArrayList;
@@ -14,9 +14,16 @@ import java.util.function.Predicate;
 
 
 @Builder
-@AllArgsConstructor
 public class Wall implements Structure {
     private List<Block> blocks;
+
+    public Wall(CompositeProvider blocks) {
+        this.blocks = blocks.provide();
+    }
+
+    public Wall(List<Block> blocks) {
+        this.blocks = blocks;
+    }
 
     /**
      *
