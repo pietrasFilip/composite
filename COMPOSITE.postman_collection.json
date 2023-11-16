@@ -1,0 +1,109 @@
+{
+	"info": {
+		"_postman_id": "696e53bc-43fa-41c6-a65e-2d7503704f36",
+		"name": "COMPOSITE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27852418"
+	},
+	"item": [
+		{
+			"name": "all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/all/blocks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"all",
+						"blocks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "color",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/all/blocks/color/:color",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"all",
+						"blocks",
+						"color",
+						":color"
+					],
+					"variable": [
+						{
+							"key": "color",
+							"value": "",
+							"description": "white, red, blue"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "material",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/all/blocks/material/:material",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"all",
+						"blocks",
+						"material",
+						":material"
+					],
+					"variable": [
+						{
+							"key": "material",
+							"value": "",
+							"description": "concrete or wood"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "count",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/all/blocks/count",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"all",
+						"blocks",
+						"count"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
