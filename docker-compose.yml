@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+
+    environment:
+      MYSQL_DATABASE: composite_db
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user1234
+      MYSQL_TCP_PORT: 3307
+    ports:
+      - "3307:3307"
+    expose:
+      - "3307"
+    networks:
+      - composite-network
+    volumes:
+      - "./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./src/main/resources/data.sql:/docker-entrypoint-initdb.d/2.sql"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 5s
+      retries: 10
+
+  composite_task_web:
+    image: composite_task_web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    networks:
+      - composite-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysql:
+  composite_task_web:
+networks:
+  composite-network:
