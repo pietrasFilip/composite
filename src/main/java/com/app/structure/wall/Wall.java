@@ -32,9 +32,22 @@ public class Wall implements Structure {
      */
     @Override
     public Optional<Block> findBlockByColor(String color) {
-        return findBlockByPredicate(block -> block.getColor().equals(color))
-                .parallelStream()
-                .findAny();
+        return findBlockInList(blocks, color);
+    }
+
+    private Optional<Block> findBlockInList(List<Block> blocks, String color) {
+        for (Block block : blocks) {
+            if (block.getColor().equalsIgnoreCase(color)) {
+                return Optional.of(block);
+            }
+            if (block instanceof CompositeBlock cb) {
+                Optional<Block> found = findBlockInList(cb.getBlocks(), color);
+                if (found.isPresent()) {
+                    return found;
+                }
+            }
+        }
+        return Optional.empty();
     }
 
     /**

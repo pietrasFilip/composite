@@ -19,7 +19,7 @@ public class Main {
         //------------------------------------------------------------------------------------------
         // WEB
         //------------------------------------------------------------------------------------------
-        initExceptionHandler(e -> System.out.println(e.getMessage()));
+        /*initExceptionHandler(e -> System.out.println(e.getMessage()));
         port(8080);
 
         var context = new AnnotationConfigApplicationContext(AppConfig.class);
@@ -28,7 +28,7 @@ public class Main {
         errorRouting.routes();
 
         var wallRouting = context.getBean("wallRouting", WallRouting.class);
-        wallRouting.routes();
+        wallRouting.routes();*/
 
         //------------------------------------------------------------------------------------------
         // CODE TO EXECUTE WITHOUT USING DOCKER
@@ -74,9 +74,17 @@ public class Main {
                 .blocks(blocks2)
                 .build();
 
+        var compositeBlock3 = CompositeBlockImpl
+                .builder()
+                .color("black")
+                .material("wood")
+                .blocks(blocks)
+                .build();
+
         var listWithComposite = new ArrayList<Block>();
         listWithComposite.add(compositeBlock);
         listWithComposite.add(block1);
+        listWithComposite.add(compositeBlock3);
 
         var compositeBlock2 = CompositeBlockImpl
                 .builder()
@@ -99,7 +107,7 @@ public class Main {
 
         System.out.println("----------(WALL)----------");
         System.out.println("----------(1)----------");
-        System.out.println(wall.findBlockByColor("red"));
+        System.out.println(wall.findBlockByColor("black"));
         System.out.println("----------(2)----------");
         System.out.println(wall.findBlocksByMaterial("wood"));
         System.out.println("----------(3)----------");
