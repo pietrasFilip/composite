@@ -10,6 +10,7 @@ import com.app.web.routing.WallRouting;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static spark.Spark.initExceptionHandler;
 import static spark.Spark.port;

@@ -6,11 +6,9 @@ import com.app.repository.provider.CompositeProvider;
 import com.app.structure.Structure;
 import lombok.Builder;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 
 @Builder
@@ -26,78 +24,45 @@ public class Wall implements Structure {
     }
 
     /**
-     *
      * @param color block color
      * @return any block that are in given color
      */
     @Override
     public Optional<Block> findBlockByColor(String color) {
-        return findBlockInList(blocks, color);
-    }
-
-    private Optional<Block> findBlockInList(List<Block> blocks, String color) {
-        for (Block block : blocks) {
-            if (block.getColor().equalsIgnoreCase(color)) {
-                return Optional.of(block);
-            }
-            if (block instanceof CompositeBlock cb) {
-                Optional<Block> found = findBlockInList(cb.getBlocks(), color);
-                if (found.isPresent()) {
-                    return found;
-                }
-            }
-        }
-        return Optional.empty();
+        return wallToStream(blocks)
+                .filter(block -> block.getColor().equalsIgnoreCase(color))
+                .findFirst();
     }
 
     /**
-     *
      * @param material block material
      * @return all blocks that are made of given material
      */
     @Override
     public List<Block> findBlocksByMaterial(String material) {
-        return findBlockByPredicate(block -> block.getMaterial().equals(material));
+        return wallToStream(blocks)
+                .filter(block -> block.getMaterial().equalsIgnoreCase(material))
+                .toList();
     }
 
     /**
-     *
      * @return number of blocks, that creates structure
      */
     @Override
     public int count() {
-        return findBlockByPredicate(Objects::nonNull).size();
+        return wallToStream(blocks).toList().size();
     }
 
     /**
      *
-     * @param predicate predicate condition
-     * @return - list of blocks, that met given condition
+     * @param blocks list of blocks in wall
+     * @return stream of all possible blocks in wall
      */
-    private List<Block> findBlockByPredicate(Predicate<Block> predicate) {
-        var result = new ArrayList<Block>();
-
-        for (var block : blocks) {
-            checkComposite(block, predicate, result);
-        }
-        return result;
-    }
-
-    /**
-     *
-     * @param block element from blocks list. Can be Block or CompositeBlock.
-     * @param predicate predicate condition.
-     * @param result list with final result.
-     */
-    private void checkComposite(Block block, Predicate<Block> predicate, List<Block> result) {
-        if (predicate.test(block)) {
-            result.add(block);
-        }
-
-        if (block instanceof CompositeBlock compositeBlock) {
-            for (var composite : compositeBlock.getBlocks()) {
-                checkComposite(composite, predicate, result);
-            }
-        }
+    Stream<Block> wallToStream(List<Block> blocks) {
+        return blocks.stream()
+                .flatMap(block -> block instanceof CompositeBlock cb ?
+                        Stream.concat(Stream.of(cb), wallToStream(cb.getBlocks())) :
+                        Stream.of(block)
+                );
     }
 }
